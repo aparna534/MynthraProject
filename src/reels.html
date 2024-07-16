@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myntra Swipe Card Page 1</title>
+	<link rel="stylesheet" href="style.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .swipe_card {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+        }
+
+        .swipe_card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swipe_card.grabbing {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="swipe_card" id="swipeCard">
+        <video controls>
+            <source src="C:\\Users\\nidhi\\Downloads\\WhatsApp Video 2024-07-15 at 9.22.43 AM.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        
+        const swipeCard = document.getElementById('swipeCard');
+        let startX, currentX;
+
+        swipeCard.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            swipeCard.classList.add('grabbing');
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            currentX = e.clientX;
+            const deltaX = currentX - startX;
+            swipeCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.05}deg)`;
+        }
+
+        function onMouseUp(e) {
+            const deltaX = e.clientX - startX;
+            swipeCard.classList.remove('grabbing');
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+
+            if (deltaX > 150) {
+                swipeCard.style.transition = 'transform 0.3s ease-out';
+                swipeCard.style.transform = `translateX(100vw) rotate(${deltaX * 0.05}deg)`;
+                setTimeout(() => {
+                    window.location.href = 'swipe_card_page2.html'; // Redirect to Swipe Card Page 2
+                }, 300);
+            } else {
+                swipeCard.style.transition = 'transform 0.3s ease-out';
+                swipeCard.style.transform = 'translateX(0) rotate(0)';
+                setTimeout(() => {
+                    swipeCard.style.transition = '';
+                }, 300);
+            }
+        }
+    </script>
+</body>
+
+</html>
